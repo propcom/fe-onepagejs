@@ -1,0 +1,38 @@
+{
+    "name": "One Page JS",
+
+    "authors": [
+        "Brett Chisholm"
+    ],
+
+    "description": "Javascript to handle one page sites built on the Propeller two day build template",
+
+    "main": "onepage.js",
+
+    "repository": {
+        "type" : "git",
+        "url" : "https://github.com/propcom/onepagejs.git"
+    },
+
+    "keywords": [
+        "One page",
+        "jQuery",
+        "Propeller",
+        "propcomm",
+        "propeller",
+        "propcom"
+    ],
+
+    "license": "Public",
+
+    "homepage": "https://github.com/propcom/onepagejs.git",
+
+    "ignore": [
+        "README.md"
+    ],
+
+    "install": {
+        "onepage.js" : "httpdocs/assets/js/modules",
+        "in-viewport.js" : "httpdocs/assets/lib/"
+    }
+}
