@@ -16,14 +16,14 @@ A link with your specified class will scroll you to the correct section as speci
 
 Link format (the one page JS class MUST come first before other classes): 
 
-<pre>
+```html
 	<a href="about" class="js-nav">About</a>
-</pre>
+```
 
 Section format:
 
-<pre>
+```html
 	<div class="js-page" data-page="about" id="about"></div>	
-</pre>
+```
 
 See the [one page site guide] (http://wiki.local/wiki/One_page_site) for how to set up your controllers in fuel.
