@@ -96,6 +96,20 @@
 
 			this.gaPush();
 
+			this.link.each(function(){
+
+				if ($(this).attr('href') == pageId) {
+
+					$(this).addClass('active');
+
+				} else {
+					
+					$(this).removeClass('active');
+
+				}
+
+			});
+
 		},
 
 		urlPush : function(page) {
