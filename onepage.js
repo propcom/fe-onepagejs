@@ -49,10 +49,21 @@
 
 			// on scroll update url and push to ga
 
+			var scrollEnd;
+
 			$(window).scroll(function(){
 
-				self.switchActive();
+				if(scrollEnd) {
 
+				    clearTimeout(scrollEnd);  
+
+				}
+
+				scrollEnd = setTimeout(function(){
+				  	
+				  	self.switchActive();
+
+				}, 100);
 			});
 
 		},
@@ -79,7 +90,7 @@
 
 		switchActive : function() {
 
-			var pageId = $('.'+this.pageClass+':in-viewport').attr('data-page');
+			var pageId = $('.'+this.pageClass+':in-viewport').attr('id');
 
 			this.urlPush(pageId);
 
