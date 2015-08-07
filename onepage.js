@@ -58,7 +58,7 @@
 				  	self.switchActive();
 
 					$('html, body').css({
-						'pointer-events': 'initial'
+						'pointer-events': 'auto'
 					});
 
 
