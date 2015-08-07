@@ -31,27 +31,13 @@
 
 			var self = this;
 
-			$(this.link).on('click', function(e){
+			$(this.link).on('click', this.scrollIt);
 				
-				e.preventDefault();
-
-				var link = $(this).attr('href');
-
-				self.translate(link);
-
-				setTimeout(function(){
-				  
-					self.urlPush(link);
-
-				}, 800);
-
-			});
-
 			// on scroll update url and push to ga
 
 			var scrollEnd;
 
-			$(window).scroll(function(){
+			$(window).scroll(function(){ 
 
 				if(scrollEnd) {
 
@@ -65,6 +51,23 @@
 
 				}, 100);
 			});
+
+		},
+
+		scrollIt : function(e) {
+
+			e.preventDefault();
+
+			var self = onepage,
+				link = $(this).attr('href'); 
+
+			self.translate(link);
+
+			setTimeout(function(){
+			  
+				self.urlPush(link);
+
+			}, 800);
 
 		},
 
