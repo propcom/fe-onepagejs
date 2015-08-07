@@ -29,28 +29,41 @@
 
 			// obtain a reference
 
-			var self = this;
+			var self = this,
+				scrollEnd;
 
 			$(this.link).on('click', this.scrollIt);
 				
 			// on scroll update url and push to ga
 
-			var scrollEnd;
+			$(window).on('scroll', function(){ 
 
-			$(window).scroll(function(){ 
+				window.requestAnimationFrame(scrollHandler);
+
+			});
+
+			function scrollHandler() {
+
+				$('html, body').css({
+					'pointer-events': 'none'				
+				});
 
 				if(scrollEnd) {
 
 				    clearTimeout(scrollEnd);  
-
 				}
 
 				scrollEnd = setTimeout(function(){
-				  	
+
 				  	self.switchActive();
 
-				}, 100);
-			});
+					$('html, body').css({
+						'pointer-events': 'initial'
+					});
+
+
+				}, 200);
+			}
 
 		},
 
@@ -99,19 +112,19 @@
 
 			this.gaPush();
 
-			this.link.each(function(){
+			for (var i = this.link.length - 1; i >= 0; i--) {
 
-				if ($(this).attr('href') == pageId) {
+				if ($(this.link[i]).attr('href') == pageId) {
 
-					$(this).addClass('active');
+					$(this.link[i]).addClass('active');
 
 				} else {
-					
-					$(this).removeClass('active');
+
+					$(this.link[i]).removeClass('active');				
 
 				}
 
-			});
+			}
 
 		},
 
