@@ -2,6 +2,10 @@
 
 One page JS allows you to create the basic functioanlity of a one page site including navigation, pushstates and analytics tracking. It utilises Mika Tuupola's in-viewport selectors.
 
+To install:
+
+<pre>ppm install propcom-onepagejs</pre>
+
 The below will initialise an instance of onepage JS. Reference your page class, nav class and offset.
 
 <pre>
