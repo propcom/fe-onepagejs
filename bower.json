@@ -33,6 +33,6 @@
 
     "install": {
         "onepage.js" : "httpdocs/assets/js/modules",
-        "in-viewport.js" : "httpdocs/assets/lib/"
+        "in-viewport.js" : "httpdocs/assets/js/lib/"
     }
 }
