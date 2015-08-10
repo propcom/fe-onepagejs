@@ -72,7 +72,7 @@
 			e.preventDefault();
 
 			var self = onepage,
-				link = $(this).attr('href'); 
+				link = $(this).attr('href').replace('/', '');  
 
 			self.translate(link);
 
