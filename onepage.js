@@ -9,11 +9,19 @@
 		this.offset = $offset; 
 		this.init();
 
+		this.currentPage;
+
 	}
 
 	onepage.prototype = {
 
 		init : function() {
+
+			var loadedPage = window.location.pathname.substr(1);
+
+			if (loadedPage == '') {
+				loadedPage = 'index';
+			}
 
 			// register events
 
@@ -21,7 +29,7 @@
 
 			// on load scroll to correct page
 
-			this.translate(window.location.pathname.substr(1));
+			$(window).scrollTop($('#'+loadedPage).offset().top - this.offset);
 
 		},
 
@@ -58,7 +66,7 @@
 				  	self.switchActive();
 
 					$('html, body').css({
-						'pointer-events': 'auto'
+						'pointer-events': 'initial'
 					});
 
 
@@ -140,11 +148,15 @@
 
 			var ga_page = page;
 
-			if (ga_page == 'home') {
+			if(ga_page === this.currentPage) return;
+
+			this.currentPage = ga_page;
+
+			if (ga_page == 'index') {
 				ga_page = '';
 			}
 
-			ga('send', 'pageview', "/"+ga_page);
+			_gaq.push(['_trackPageview', '/' + ga_page]);
 
 		}
 
