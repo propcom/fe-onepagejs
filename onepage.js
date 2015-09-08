@@ -118,7 +118,7 @@
 
 			this.urlPush(pageId);
 
-			this.gaPush();
+			this.gaPush(pageId);
 
 			for (var i = this.link.length - 1; i >= 0; i--) {
 
@@ -156,7 +156,7 @@
 				ga_page = '';
 			}
 
-			_gaq.push(['_trackPageview', '/' + ga_page]);
+			ga('send', 'pageview', "/"+ga_page);
 
 		}
 
