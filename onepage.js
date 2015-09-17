@@ -81,33 +81,30 @@ onepage.prototype = {
     scrollIt : function(e) {
 
         e.preventDefault();
+        e.stopPropagation();
 
         opsScrollFunc = false;
 
-        var self = onepage,
-            link = $(this).attr('href').replace('/', '');
+        var self = this,
+            link = $(this).attr('href');
 
-        self.translate(link);
+        onepage.translateIt(link);
 
         setTimeout(function(){
 
-            self.urlPush(link);
-            self.linkActive(link);
+            onepage.urlPush(link);
+            onepage.linkActive(link);
             opsScrollFunc = true;
 
         }, 800);
 
     },
 
-    translate : function(target) {
+    translateIt : function(target) {
 
         var self = this;
 
-        if (!target) {
-            target = 'index';
-        }
-
-        var scrollTo = ($('#'+target).offset().top - self.offset) - $('header').height();
+        var scrollTo = $('#'+target).offset().top - self.offset;
 
         $('html, body').animate({
 
