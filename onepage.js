@@ -10,7 +10,7 @@ var onepage = function($page, $link, $offset) {
     this.init();
 
     this.currentPage;
-    scrollFunc = true;
+    opsScrollFunc = true;
 
 }
 
@@ -47,15 +47,13 @@ onepage.prototype = {
 
         $(window).on('scroll', function(){
 
-        	if (scrollFunc == true) {
-            	window.requestAnimationFrame(scrollHandler);
+            if (opsScrollFunc == true) {
+                window.requestAnimationFrame(scrollHandler);
             }
 
         });
 
         function scrollHandler() {
-
-        	console.log('in the scroll handler');
 
             $('html, body').css({
                 'pointer-events': 'none'
@@ -84,7 +82,7 @@ onepage.prototype = {
 
         e.preventDefault();
 
-        scrollFunc = false;
+        opsScrollFunc = false;
 
         var self = onepage,
             link = $(this).attr('href').replace('/', '');
@@ -95,7 +93,7 @@ onepage.prototype = {
 
             self.urlPush(link);
             self.linkActive(link);
-            scrollFunc = true;
+            opsScrollFunc = true;
 
         }, 800);
 
@@ -122,19 +120,19 @@ onepage.prototype = {
     switchActive : function() {
 
         var pageId,
-        	self = this;
+            self = this;
 
-		for (var i = this.page.length - 1; i >= 0; i--) {
+        for (var i = this.page.length - 1; i >= 0; i--) {
 
-			var content = $(this.page[i]);
+            var content = $(this.page[i]);
 
-			if ((content.offset().top - self.offset < $(window).scrollTop() ) && ( content.offset().top + content.outerHeight() - self.offset > $(window).scrollTop())) {
+            if ((content.offset().top - self.offset < $(window).scrollTop() ) && ( content.offset().top + content.outerHeight() - self.offset > $(window).scrollTop())) {
 
-				pageId = $(content).attr('id');
+                pageId = $(content).attr('id');
 
-			}
+            }
 
-		};        	
+        };          
 
         this.urlPush(pageId);
 
@@ -145,8 +143,6 @@ onepage.prototype = {
     },
 
     linkActive : function(pageId) {
-
-    	console.log(pageId);
 
         for (var i = this.link.length - 1; i >= 0; i--) {
 
