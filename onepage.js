@@ -1,163 +1,189 @@
 
-	// constructor
+// constructor
 
-	var onepage = function($page, $link, $offset) {
+var onepage = function($page, $link, $offset) {
 
-		this.page = $page;
-		this.pageClass = this.page.attr('class').split(' ')[0];
-		this.link = $link;
-		this.offset = $offset; 
-		this.init();
+    this.page = $page;
+    this.pageClass = this.page.attr('class').split(' ')[0];
+    this.link = $link;
+    this.offset = $offset;
+    this.init();
 
-		this.currentPage;
+    this.currentPage;
+    opsScrollFunc = true;
 
-	}
+}
 
-	onepage.prototype = {
+onepage.prototype = {
 
-		init : function() {
+    init : function() {
 
-			var loadedPage = window.location.pathname.substr(1);
+        var loadedPage = window.location.pathname.substr(1);
 
-			if (loadedPage == '') {
-				loadedPage = 'index';
-			}
+        if (loadedPage == '') {
+            loadedPage = 'index';
+        }
 
-			// register events
+        // register events
 
-			this.register_events();
+        this.register_events();
 
-			// on load scroll to correct page
+        // on load scroll to correct page
 
-			$(window).scrollTop($('#'+loadedPage).offset().top - this.offset);
+        $(window).scrollTop($('#'+loadedPage).offset().top - this.offset);
 
-		},
+    },
 
-		register_events : function() {
+    register_events : function() {
 
-			// obtain a reference
+        // obtain a reference
 
-			var self = this,
-				scrollEnd;
+        var self = this,
+            scrollEnd;
 
-			$(this.link).on('click', this.scrollIt);
-				
-			// on scroll update url and push to ga
+        $(this.link).on('click', this.scrollIt);
 
-			$(window).on('scroll', function(){ 
+        // on scroll update url and push to ga
 
-				window.requestAnimationFrame(scrollHandler);
+        $(window).on('scroll', function(){
 
-			});
+            if (opsScrollFunc == true) {
+                window.requestAnimationFrame(scrollHandler);
+            }
 
-			function scrollHandler() {
+        });
 
-				$('html, body').css({
-					'pointer-events': 'none'				
-				});
+        function scrollHandler() {
 
-				if(scrollEnd) {
+            $('html, body').css({
+                'pointer-events': 'none'
+            });
 
-				    clearTimeout(scrollEnd);  
-				}
+            if(scrollEnd) {
 
-				scrollEnd = setTimeout(function(){
+                clearTimeout(scrollEnd);
+            }
 
-				  	self.switchActive();
+            scrollEnd = setTimeout(function(){
 
-					$('html, body').css({
-						'pointer-events': 'initial'
-					});
+                self.switchActive();
 
+                $('html, body').css({
+                    'pointer-events': 'auto'
+                });
 
-				}, 200);
-			}
 
-		},
+            }, 200);
+        }
 
-		scrollIt : function(e) {
+    },
 
-			e.preventDefault();
+    scrollIt : function(e) {
 
-			var self = onepage,
-				link = $(this).attr('href').replace('/', '');  
+        e.preventDefault();
 
-			self.translate(link);
+        opsScrollFunc = false;
 
-			setTimeout(function(){
-			  
-				self.urlPush(link);
+        var self = onepage,
+            link = $(this).attr('href').replace('/', '');
 
-			}, 800);
+        self.translate(link);
 
-		},
+        setTimeout(function(){
 
-		translate : function(target) {
+            self.urlPush(link);
+            self.linkActive(link);
+            opsScrollFunc = true;
 
-			var self = this;
+        }, 800);
 
-			if (!target) {
-				target = 'index';
-			}
+    },
 
-			$('html, body').animate({
+    translate : function(target) {
 
-				scrollTop: $('#'+target).offset().top - self.offset  
+        var self = this;
 
-			}, 500, function(){
-				  
-				self.switchActive();
+        if (!target) {
+            target = 'index';
+        }
 
-			});
+        var scrollTo = ($('#'+target).offset().top - self.offset) - $('header').height();
 
-		},
+        $('html, body').animate({
 
-		switchActive : function() {
+            scrollTop: scrollTo
 
-			var pageId = $('.'+this.pageClass+':in-viewport').attr('id');
+        }, 500);
 
-			this.urlPush(pageId);
+    },
 
-			this.gaPush();
+    switchActive : function() {
 
-			for (var i = this.link.length - 1; i >= 0; i--) {
+        var pageId,
+            self = this;
 
-				if ($(this.link[i]).attr('href') == pageId) {
+        for (var i = this.page.length - 1; i >= 0; i--) {
 
-					$(this.link[i]).addClass('active');
+            var content = $(this.page[i]);
 
-				} else {
+            if ((content.offset().top - self.offset < $(window).scrollTop() ) && ( content.offset().top + content.outerHeight() - self.offset > $(window).scrollTop())) {
 
-					$(this.link[i]).removeClass('active');				
+                pageId = $(content).attr('id');
 
-				}
+            }
 
-			}
+        };          
 
-		},
+        this.urlPush(pageId);
 
-		urlPush : function(page) {
+        this.gaPush(pageId);
 
-			if (history.pushState) {
-				history.pushState('', '', page);
-			}
+        this.linkActive(pageId);
 
-		},
+    },
 
-		gaPush : function(page) {
+    linkActive : function(pageId) {
 
-			var ga_page = page;
+        for (var i = this.link.length - 1; i >= 0; i--) {
 
-			if(ga_page === this.currentPage) return;
+            if ($(this.link[i]).attr('href') == pageId) {
 
-			this.currentPage = ga_page;
+                $(this.link[i]).addClass('active');
 
-			if (ga_page == 'index') {
-				ga_page = '';
-			}
+            } else {
 
-			_gaq.push(['_trackPageview', '/' + ga_page]);
+                $(this.link[i]).removeClass('active');
 
-		}
+            }
 
-	}
+        }
+
+    },
+
+    urlPush : function(page) {
+
+        if (history.pushState) {
+            history.pushState('', '', page);
+        }
+
+    },
+
+    gaPush : function(page) {
+
+        var ga_page = page;
+
+        if(ga_page === this.currentPage) return;
+
+        this.currentPage = ga_page;
+
+        if (ga_page == 'index') {
+            ga_page = '';
+        }
+
+        if (ga_page != undefined) {
+            ga('send', 'pageview', "/"+ga_page);
+        }
+
+    }
+
+}
